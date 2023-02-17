@@ -1,7 +1,7 @@
 let lat;
 let lon;
 let locationName = document.getElementById("locationName");
-let icon = document.getElementById("icon");
+let setIcon = document.getElementById("icon");
 let desc = document.getElementById("description");
 let temperature = document.getElementById("temp")
 let minTemp = document.getElementById("minTemp")
@@ -26,7 +26,6 @@ if(navigator.geolocation){
             const data = await getWeatherData(e.latlng.lat,e.latlng.lng);
             marker.setLatLng([e.latlng.lat,e.latlng.lng]);
             marker.bindPopup(`<b>${data.name}</b>`).openPopup();
-
         });
         
         return data;
@@ -52,6 +51,7 @@ function dataHandler(data){
     const {description} = data.weather[0];
     const {temp,temp_min,temp_max} = data.main;
     const {speed} = data.wind;
+    const {icon} = data.weather[0];
 
     locationName.innerHTML = data.name;
     desc.innerHTML = description;
@@ -59,8 +59,31 @@ function dataHandler(data){
     minTemp.innerHTML = "Min Temp:" + temp_min;
     maxTemp.innerHTML = "Max Temp:" + temp_max;
     windSpeed.innerHTML = "Wind Speed: "+speed+" m/s";
+    setIcon.style["background"] = `url(${setIconFunction(icon)})`
+}
 
+function setIconFunction(icon) {
 
-
-
+    const icons = {
+        "01d": "./animated/day.svg",
+        "02d": "./animated/cloudy-day-1.svg",
+        "03d": "./animated/cloudy-day-2.svg",
+        "04d": "./animated/cloudy-day-3.svg",
+        "09d": "./animated/rainy-1.svg",
+        "10d": "./animated/rainy-2.svg",
+        "11d": "./animated/rainy-3.svg",
+        "13d": "./animated/snowy-6.svg",
+        "50d": "./animated/mist.svg",
+        "01n": "./animated/night.svg",
+        "02n": "./animated/cloudy-night-1.svg",
+        "03n": "./animated/cloudy-night-2.svg",
+        "04n": "./animated/cloudy-night-3.svg",
+        "09n": "./animated/rainy-1.svg",
+        "10n": "./animated/rainy-2.svg",
+        "11n": "./animated/rainy-3.svg",
+        "13n": "./animated/snowy-6.svg",
+        "50n": "./animated/mist.svg"
+    };
+ 
+    return icons[icon];
 }
